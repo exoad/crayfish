@@ -150,7 +150,7 @@ typedef struct Vector3
     float z;
 } Vector3;
 
-#ifdef JM_REDEFINE_SDL_TYPES
+#include "SDL3/SDL.h"
 
 typedef SDL_FRect Rect;
 typedef SDL_Event SDLEvent;
@@ -161,7 +161,6 @@ typedef SDL_Surface SDLSurface;
 typedef SDL_Color Color;
 
 // redefine some functions and stuffs so they are not so cluttered in their naming
-#define setDrawColor SDL_SetRenderDrawColor
 #define clearRender SDL_RenderClear
 #define drawRect SDL_RenderRect
 #define fillRect SDL_RenderFillRect
@@ -180,29 +179,19 @@ typedef SDL_Color Color;
 #define pollSDLEvent SDL_PollEvent
 #define createRenderer SDL_CreateRenderer
 #define sdl_quit SDL_Quit
-
-// some macro functions for quickly creating stuffs
-static inline Color newColor16(U16 rgb565)
-{
-    return (Color) {
-        .r = ((rgb565 >> 11) & 0x1F) << 3,
-        .g = ((rgb565 >> 5) & 0x3F) << 2,
-        .b = (rgb565 & 0x1F) << 3,
-        .a = 255
-    };
-}
+#define drawDebugText SDL_RenderDebugText
 
 #include "colors.h"
 
-static inline U0 setDrawColor16(SDLRenderer* renderer, U16 color)
+static inline U0 setDrawColor(SDLRenderer* renderer, I32 color)
 {
-    Color c = newColor16(color);
-    setDrawColor(renderer, c.r, c.g, c.b, c.a);
+    SDL_SetRenderDrawColor(renderer, (U8) (color >> 24) & 0xFF, (U8) (color >> 16) & 0xFF, (U8) (color >> 8) & 0xFF,
+    (U8) color & 0xFF);
 }
 
-#endif
+#define implyUsed(v) ((U0) v)
 
-#define null (U0*) 0
+#define null ((U0*) 0)
 
 #define ensure(ptr)                                                           \
         if ((ptr) == NULL)                                                    \

@@ -3,14 +3,15 @@
 
 // https://rgbcolorpicker.com/565
 
-#define COLOR_BLACK (0x00000000)
-#define COLOR_WHITE (0xffff)
+#define COLOR_BLACK (0x000000ff)
+#define COLOR_WHITE (0xffffffff)
 #define COLOR_GREEN (0x00ff00ff)
-#define COLOR_RED (0xFF0000ff)
-#define COLOR_BLUE (0x00ff)
+#define COLOR_RED (0xff0000ff)
+#define COLOR_BLUE (0x0000ffff)
+#define COLOR_MAGENTA (0xff00ffff)
+#define COLOR_OPAQUE (0x000000ffff)
+#define COLOR_TRANSPARENT (0x00000000)
 
 #include "def.h"
-
-U16 convertToRGB565(U32 color);
 
 #endif
